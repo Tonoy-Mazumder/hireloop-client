@@ -26,12 +26,6 @@ const stats = [
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-[#010103] text-white">
-      {/* Ambient violet glow behind the top content */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-96 bg-[radial-gradient(55%_70%_at_50%_0%,rgba(99,72,235,0.18),transparent_75%)]"
-      />
-
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 pt-16 text-center sm:pt-24">
         {/* New jobs badge */}
         <div className="inline-flex rounded-full bg-gradient-to-b from-white/25 to-white/5 p-px shadow-[0_8px_30px_rgba(255,255,255,0.08)]">
