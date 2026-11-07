@@ -1,35 +1,38 @@
 "use client"
 
 import Link from "next/link"
+import { useState } from "react"
+import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { signIn } from "@/lib/auth-client"
-import { redirect } from "next/navigation"
+import { cn } from "cn"
 
 const inputClassName =
   "w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-white/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-500/30"
 
 export default function SignInPage() {
+  const [showPassword, setShowPassword] = useState(false)
+
   // Collects all form data. Auth integration happens later:
   // pass `data` to authClient.signIn.email(data).
-   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const formData = new FormData(event.currentTarget)
     const UserData = {
       email: String(formData.get("email") ?? ""),
       password: String(formData.get("password") ?? ""),
-      
     }
-    const {data,error} = await signIn.email({
-        ...UserData,
-        rememberMe:true,
-        callbackURL:"/"
+    const { data, error } = await signIn.email({
+      ...UserData,
+      rememberMe: true,
+      callbackURL: "/",
     })
-    
+
     // TODO: integrate authClient.signIn.email(data)
     console.log("[auth:sign-in]", UserData)
-    console.log(data)
+    console.log(data, error)
   }
 
   return (
@@ -70,29 +73,54 @@ export default function SignInPage() {
             <span className="font-mono text-xs tracking-widest text-white/50 uppercase">
               Email
             </span>
-            <input
-              type="email"
-              name="email"
-              placeholder="you@example.com"
-              autoComplete="email"
-              required
-              className={inputClassName}
-            />
+            <div className="relative">
+              <MailIcon
+                aria-hidden
+                className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-white/40"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                autoComplete="email"
+                required
+                className={cn(inputClassName, "pl-10")}
+              />
+            </div>
           </label>
 
           <label className="flex flex-col gap-1.5">
             <span className="font-mono text-xs tracking-widest text-white/50 uppercase">
               Password
             </span>
-            <input
-              type="password"
-              name="password"
-              placeholder="••••••••"
-              autoComplete="current-password"
-              required
-              minLength={8}
-              className={inputClassName}
-            />
+            <div className="relative">
+              <LockIcon
+                aria-hidden
+                className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-white/40"
+              />
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="••••••••"
+                autoComplete="current-password"
+                required
+                minLength={8}
+                className={cn(inputClassName, "pr-11 pl-10")}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((show) => !show)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-pressed={showPassword}
+                className="absolute top-1/2 right-2.5 -translate-y-1/2 rounded-md p-1 text-white/40 transition-colors hover:text-white"
+              >
+                {showPassword ? (
+                  <EyeOffIcon aria-hidden className="size-4" />
+                ) : (
+                  <EyeIcon aria-hidden className="size-4" />
+                )}
+              </button>
+            </div>
           </label>
 
           <Button
