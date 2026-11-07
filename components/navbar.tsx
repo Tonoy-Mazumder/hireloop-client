@@ -37,7 +37,7 @@ export function Navbar() {
 
   return (
     <header className="p-3 sm:p-4">
-      <nav className="mx-auto flex h-14 items-center justify-between rounded-xl bg-neutral-950 pr-2 pl-4 sm:pl-5">
+      <nav className="mx-auto flex h-14 items-center justify-between rounded-xl bg-[#222222] pr-2 pl-4 sm:pl-5">
         <Logo />
 
         {/* Desktop */}
@@ -86,7 +86,7 @@ export function Navbar() {
 
           <SheetContent
             side="right"
-            className="w-72 max-w-[85vw] border-white/10 bg-neutral-950 text-white [&_[data-slot=sheet-close]]:text-white [&_[data-slot=sheet-close]]:hover:bg-white/10 [&_[data-slot=sheet-close]]:hover:text-white"
+            className="w-72 max-w-[85vw] border-white/10 bg-[#222222] text-white [&_[data-slot=sheet-close]]:text-white [&_[data-slot=sheet-close]]:hover:bg-white/10 [&_[data-slot=sheet-close]]:hover:text-white"
           >
             <SheetHeader>
               <SheetTitle className="sr-only">Hireloop menu</SheetTitle>
