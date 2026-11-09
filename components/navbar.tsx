@@ -17,6 +17,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { cn } from "cn"
+import { signOut, useSession } from "@/lib/auth-client"
 
 const links = [
   { href: "/browse-jobs", label: "Browse Jobs" },
@@ -34,6 +35,8 @@ function Logo() {
 
 export function Navbar() {
   const pathname = usePathname()
+  const { data: session } = useSession()
+  console.log(session?.user)
 
   return (
     <header className="p-3 sm:p-4">
@@ -55,18 +58,27 @@ export function Navbar() {
             </Link>
           ))}
           <span aria-hidden className="h-5 w-px bg-white/15" />
-          <Link
-            href="/sign-in"
-            className="text-sm text-white/70 transition-colors hover:text-white"
-          >
-            Sign In
-          </Link>
-          <Button
-            render={<Link href="/sign-up" />}
-            className="rounded-lg bg-indigo-500 text-white hover:bg-indigo-400 aria-expanded:bg-indigo-400"
-          >
-            Get Started
-          </Button>
+          {
+            session?.user ? <><span>welcome, {session?.user.name} </span>
+              <Button
+                onClick={() => signOut()}
+                className="rounded-lg bg-indigo-500 text-white hover:bg-indigo-400 aria-expanded:bg-indigo-400">
+                sign out
+              </Button>
+            </>
+              : <>   <Link
+                href="/sign-in"
+                className="text-sm text-white/70 transition-colors hover:text-white"
+              >
+                Sign In
+              </Link>
+                <Button
+                  render={<Link href="/sign-up" />}
+                  className="rounded-lg bg-indigo-500 text-white hover:bg-indigo-400 aria-expanded:bg-indigo-400"
+                >
+                  Get Started
+                </Button></>
+          }
         </div>
 
         {/* Mobile */}
