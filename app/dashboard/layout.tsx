@@ -1,5 +1,6 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { DashboardSidebar } from "../components/DashboardSidebar"
+import { Toaster } from "@/components/ui/toast"
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -9,6 +10,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
         <SidebarTrigger />
         {children}
       </main>
+      <Toaster />
     </SidebarProvider>
   )
 }
