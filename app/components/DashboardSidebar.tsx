@@ -84,7 +84,6 @@ const menuItemsByRole: Record<Role, MenuItem[]> = {
 export function DashboardSidebar() {
     const { data: session, isPending } = useSession()
     const role = session?.user?.role || 'seeker'
-    console.log('user er data from sidebar', session)
     return (
         <Sidebar>
             <SidebarHeader />
