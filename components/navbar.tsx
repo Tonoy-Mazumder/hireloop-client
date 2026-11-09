@@ -19,11 +19,7 @@ import {
 import { cn } from "cn"
 import { signOut, useSession } from "@/lib/auth-client"
 
-const links = [
-  { href: "/browse-jobs", label: "Browse Jobs" },
-  { href: "/company", label: "Company" },
-  { href: "/pricing", label: "Pricing" },
-]
+
 
 function Logo() {
   return (
@@ -36,7 +32,13 @@ function Logo() {
 export function Navbar() {
   const pathname = usePathname()
   const { data: session } = useSession()
-  console.log(session?.user)
+ 
+  const links = [
+    { href: "/browse-jobs", label: "Browse Jobs" },
+    { href: "/company", label: "Company" },
+    { href: "/pricing", label: "Pricing" },
+    { href: `/dashboard/${session?.user?.role || 'seeker'}`, label: "Dashboard" },
+  ]
 
   return (
     <header className="p-3 sm:p-4">

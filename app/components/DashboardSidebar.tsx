@@ -23,6 +23,7 @@ import {
     Users,
     type LucideIcon,
 } from "lucide-react"
+import Link from "next/link"
 
 type Role = "seeker" | "recruiter" | "admin"
 
@@ -94,7 +95,7 @@ export function DashboardSidebar() {
                     <SidebarMenu>
                         {menuItemsByRole[role].map((item) => (
                             <SidebarMenuItem key={item.name}>
-                                <SidebarMenuButton render={<a href={item.url} />}>
+                                <SidebarMenuButton render={<Link href={item.url} />}>
                                     <item.icon />
                                     <span>{item.name}</span>
                                 </SidebarMenuButton>
