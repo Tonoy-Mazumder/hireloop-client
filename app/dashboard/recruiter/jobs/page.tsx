@@ -30,15 +30,12 @@ import {
 import { getJobs } from "@/lib/api/jobs"
 import { DeleteJobDialog } from "@/app/components/DeleteJobDialog"
 
-
 export type JobPost = JobForm & {
     _id: string
     applicants: number
     status: "Active" | "Reviewing" | "Closed"
-    postedAt: string
+    postedAt?: string
 }
-
-
 
 const categoryStyles: Record<
     string,
@@ -75,6 +72,44 @@ function formatCompensation(job: JobForm) {
 function formatDeadline(deadline: string) {
     const date = new Date(deadline)
     if (Number.isNaN(date.getTime())) return deadline
+    return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    })
+}
+
+const postedRtf = new Intl.RelativeTimeFormat("en", { numeric: "always" })
+
+const postedUnits: Array<{
+    unit: Intl.RelativeTimeFormatUnit
+    seconds: number
+}> = [
+        { unit: "hour", seconds: 3600 },
+        { unit: "day", seconds: 86400 },
+        { unit: "week", seconds: 604800 },
+        { unit: "month", seconds: 2592000 },
+        { unit: "year", seconds: 31536000 },
+    ]
+
+function formatPostedAt(postedAt?: string) {
+    const date = postedAt ? new Date(postedAt) : null
+    if (!date || Number.isNaN(date.getTime())) return ""
+    const diffSeconds = Math.round((date.getTime() - Date.now()) / 1000)
+    if (diffSeconds > -60) return "just now"
+    const absoluteSeconds = Math.abs(diffSeconds)
+    const match = [...postedUnits]
+        .reverse()
+        .find((u) => absoluteSeconds >= u.seconds)
+    if (!match) {
+        return postedRtf.format(Math.ceil(diffSeconds / 60), "minute")
+    }
+    return postedRtf.format(Math.round(diffSeconds / match.seconds), match.unit)
+}
+
+function formatAbsoluteDate(postedAt?: string) {
+    const date = postedAt ? new Date(postedAt) : null
+    if (!date || Number.isNaN(date.getTime())) return undefined
     return date.toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
@@ -128,6 +163,8 @@ async function MangeJobPage() {
                                 icon: Briefcase,
                                 className: "bg-muted text-muted-foreground",
                             }
+                            const postedLabel = formatPostedAt(job.postedAt)
+                            const postedDate = formatAbsoluteDate(job.postedAt)
                             return (
                                 <TableRow key={job._id}>
                                     <TableCell>
@@ -189,8 +226,11 @@ async function MangeJobPage() {
                                     <TableCell>
                                         <div className="space-y-0.5 whitespace-nowrap">
                                             <p className="text-sm">{formatDeadline(job.deadline)}</p>
-                                            <p className="text-xs text-muted-foreground">
-                                                Posted {job.postedAt}
+                                            <p
+                                                className="text-xs text-muted-foreground"
+                                                title={postedDate}
+                                            >
+                                                {postedLabel ? `Posted ${postedLabel}` : "Posted —"}
                                             </p>
                                         </div>
                                     </TableCell>

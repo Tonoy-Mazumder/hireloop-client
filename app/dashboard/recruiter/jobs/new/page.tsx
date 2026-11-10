@@ -48,6 +48,7 @@ export type JobForm = {
   responsibilities: string
   qualifications: string
   status: "Active" | "Reviewing" | "Closed"
+  applicants: number
 }
 
 const initialJobForm: JobForm = {
@@ -64,6 +65,7 @@ const initialJobForm: JobForm = {
   responsibilities: "",
   qualifications: "",
   status: "Active",
+  applicants: 0,
 }
 
 function Field({
@@ -122,7 +124,11 @@ function NewJobsPage() {
       router.push("/dashboard/recruiter/jobs")
       setForm(initialJobForm)
     } catch (error) {
-      console.error("Job creation failed:", error)
+      toast.add({
+        title: "Error creating job",
+        description: "An error occurred while creating the job posting.",
+      })
+
     }
   }
 
