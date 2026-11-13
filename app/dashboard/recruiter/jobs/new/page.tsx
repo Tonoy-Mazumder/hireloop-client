@@ -155,6 +155,7 @@ function NewJobsPage() {
 
           <Field label="Job Title" required>
             <Input
+           
               placeholder="Frontend Developer"
               value={form.jobTitle}
               onChange={(e) => setField("jobTitle", e.target.value)}
